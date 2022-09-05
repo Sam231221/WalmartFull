@@ -16,6 +16,7 @@ from datetime import datetime
 def addOrderItems(request):
     user = request.user
     data = request.data
+    print('data:', data)
 
     orderItems = data['orderItems']
 
@@ -51,18 +52,33 @@ def addOrderItems(request):
                 product=product,
                 order=order,
                 name=product.name,
-                qty=i['qty'],
+                qty=int(i['quantity']),
                 price=i['price'],
                 image=product.image.url,
             )
 
             # (4) Update stock
-
+            print('\n\n', type(product.countInStock), type(item.qty))
             product.countInStock -= item.qty
             product.save()
 
         serializer = OrderSerializer(order, many=False)
         return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getOrderById(request, pk):
+    user = request.user
+    try:
+        order = Order.objects.get(_id=pk)
+        if user.is_staff or order.user == user:
+            serializer = OrderSerializer(order, many=False)
+            return Response(serializer.data)
+        else:
+            Response({'detail': 'Not authorized to view this order'},
+                     status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return Response({'detail': 'Order does not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
@@ -82,34 +98,18 @@ def getOrders(request):
     return Response(serializer.data)
 
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def getOrderById(request, pk):
-
-    user = request.user
-
-    try:
-        order = Order.objects.get(_id=pk)
-        if user.is_staff or order.user == user:
-            serializer = OrderSerializer(order, many=False)
-            return Response(serializer.data)
-        else:
-            Response({'detail': 'Not authorized to view this order'},
-                     status=status.HTTP_400_BAD_REQUEST)
-    except:
-        return Response({'detail': 'Order does not exist'}, status=status.HTTP_400_BAD_REQUEST)
-
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def updateOrderToPaid(request, pk):
     order = Order.objects.get(_id=pk)
 
+    #this is updated with new datetime.
     order.isPaid = True
     order.paidAt = datetime.now()
     order.save()
 
-    return Response('Order was paid')
+    return Response(f'Order was paid at {order.paidAt}')
 
 
 @api_view(['PUT'])
