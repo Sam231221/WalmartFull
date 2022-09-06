@@ -1,6 +1,6 @@
-import {Container,ContainerF, Row, Col} from 'react-bootstrap'
+import {Container} from 'react-bootstrap'
 
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import {HashRouter as Router, Routes, Route} from 'react-router-dom'
 
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
@@ -23,12 +23,12 @@ import UserEditScreen from './screens/admin/UserEditScreen';
 
 function App() {
   return (
-        <Router>
+        <Router basename='/'>
           <Header />
           <main>
             <Container className='py-2'>
               <Routes>
-                 <Route path="/" element={<HomeScreen />}></Route>
+                 <Route exact path="/" element={<HomeScreen />}></Route>
                  <Route exact path="/product/:id" element={<ProductScreen />}></Route>
                 
                  {/*Authentication */}
