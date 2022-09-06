@@ -29,7 +29,12 @@ export const ProductListSlice = createSlice({
     //ACTION TYPE 2
     PRODUCT_LIST_SUCCESS: (state, action) => {
       console.log('payload:',action.payload, ' state:', state)
-      return {loading: false, products:action.payload}
+      return {
+          loading: false,
+          products:action.payload.products,
+          page: action.payload.page,
+          pages: action.payload.pages
+        }
     },
 
     //ACTION TYPE 3

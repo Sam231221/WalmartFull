@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const ProductTopRatedSlice = createSlice({
   name: "productTopRated",
-  initialState: {loading: true, error:false, products:[]},
+  initialState: {loading: false, error:false, products:[]},
   reducers: {
 
     //ACTION TYPE 1( Recall switch(action.type) from reducers)

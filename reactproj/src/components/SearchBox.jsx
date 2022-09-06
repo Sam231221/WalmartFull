@@ -2,18 +2,24 @@ import React, { useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 
+
+//only works on url
+//needs rework.
 function SearchBox() {
     const [keyword, setKeyword] = useState('')
 
-    let history = useNavigate()
+    let redirect = useNavigate()
 
     const submitHandler = (e) => {
         e.preventDefault()
-        // if (keyword) {
-        //     history.push(`/?keyword=${keyword}&page=1`)
-        // } else {
-        //     history.push(history.push(history.location.pathname))
-        // }
+        if (keyword) {
+            redirect(`/?keyword=${keyword}&page=1`)
+        } else {
+            console.log('triggerd')
+            //stay in the current page
+            redirect(window.location.pathname)
+            //redirect(-1) go back one page 
+        }
     }
     return (
         <Form onSubmit={submitHandler} className="form-inline">

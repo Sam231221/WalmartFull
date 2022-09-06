@@ -4,13 +4,13 @@ import { createSlice } from "@reduxjs/toolkit";
 export const MyOrderListSlice= createSlice({
     name: "MyOrders",
     initialState: {
-          loading: true,
+          loading: false,
           error:false, 
           orders:[],
     },
     reducers: {
           ORDER_LIST_MY_REQUEST: (state, action) => {
-                 return state
+                 return {...state,loading:true}
           },
 
           ORDER_LIST_MY_SUCCESS: (state, action) => {

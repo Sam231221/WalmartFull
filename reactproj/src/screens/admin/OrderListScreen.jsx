@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
+import {useNavigate} from 'react-router-dom'
 import { Table, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../../components/Loader'
 import { Message } from '../../components/Message'
 import { listOrders } from '../../actions/orderActions'
 
-function OrderListScreen({ history }) {
+function OrderListScreen() {
 
     const dispatch = useDispatch()
-
+    const redirect =useNavigate()
+  
     const orderList = useSelector(state => state.orderList)
     const { loading, error, orders } = orderList
 
@@ -22,10 +24,10 @@ function OrderListScreen({ history }) {
         if (userInfo && userInfo.isAdmin) {
             dispatch(listOrders())
         } else {
-            history.push('/login')
+           redirect('/login')
         }
 
-    }, [dispatch, history, userInfo])
+    }, [dispatch, redirect, userInfo])
 
 
     return (
@@ -59,15 +61,21 @@ function OrderListScreen({ history }) {
 
                                         <td>{order.isPaid ? (
                                             order.paidAt.substring(0, 10)
-                                        ) : (
+                                        ) : (  <>
                                                 <i className='fas fa-check' style={{ color: 'red' }}></i>
+                                                Not Paid Yet
+                                               </>
+                                            
                                             )}
                                         </td>
 
                                         <td>{order.isDelivered ? (
                                             order.deliveredAt.substring(0, 10)
                                         ) : (
+                                                <>
                                                 <i className='fas fa-check' style={{ color: 'red' }}></i>
+                                                Not Delivered Yet.
+                                                </>
                                             )}
                                         </td>
 

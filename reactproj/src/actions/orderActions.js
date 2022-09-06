@@ -177,6 +177,8 @@ export const listMyOrders = () => async (dispatch, getState) => {
             }
         }
 
+
+        //In backend views.getOrders()
         const { data } = await axios.get(
             `/api/orders/myorders/`,
             config

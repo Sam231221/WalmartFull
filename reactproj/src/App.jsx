@@ -1,4 +1,4 @@
-import {Container, Row, Col} from 'react-bootstrap'
+import {Container,ContainerF, Row, Col} from 'react-bootstrap'
 
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 
@@ -25,10 +25,10 @@ function App() {
   return (
         <Router>
           <Header />
-          <main className="py-4">
-            <Container>
+          <main>
+            <Container className='py-2'>
               <Routes>
-                 <Route exact path="/" element={<HomeScreen />}></Route>
+                 <Route path="/" element={<HomeScreen />}></Route>
                  <Route exact path="/product/:id" element={<ProductScreen />}></Route>
                 
                  {/*Authentication */}

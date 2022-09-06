@@ -85,7 +85,8 @@ def getOrderById(request, pk):
 @permission_classes([IsAuthenticated])
 def getMyOrders(request):
     user = request.user
-    orders = user.order_set.all()
+    orders = user.order_set.order_by('-_id')
+    print(orders)
     serializer = OrderSerializer(orders, many=True)
     return Response(serializer.data)
 
@@ -93,7 +94,7 @@ def getMyOrders(request):
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
 def getOrders(request):
-    orders = Order.objects.all()
+    orders = Order.objects.order_by('-createdAt')
     serializer = OrderSerializer(orders, many=True)
     return Response(serializer.data)
 

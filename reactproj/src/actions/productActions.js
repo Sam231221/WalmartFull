@@ -2,22 +2,25 @@ import axios from 'axios'
 
 import { PRODUCT_LIST_FAIL, PRODUCT_LIST_REQUEST, PRODUCT_LIST_SUCCESS } from '../reducers/Product/ProductListSlice'
 import { PRODUCT_DETAIL_FAIL, PRODUCT_DETAIL_REQUEST, PRODUCT_DETAIL_SUCCESS } from '../reducers/Product/ProductDetailSlice'
-import { PRODUCT_TOP_RATED_FAIL,PRODUCT_TOP_RATED_REQUEST, PRODUCT_TOP_RATED_SUCCESS } from '../reducers/Product/ProductTopRatedReducer'
+import { PRODUCT_TOP_RATED_FAIL,PRODUCT_TOP_RATED_REQUEST, PRODUCT_TOP_RATED_SUCCESS } from '../reducers/Product/ProductTopRatedSlice'
 import { PRODUCT_DELETE_FAIL, PRODUCT_DELETE_REQUEST, PRODUCT_DELETE_SUCCESS } from '../reducers/Product/ProductDeleteSlice'
 import { PRODUCT_UPDATE_REQUEST , PRODUCT_UPDATE_FAIL, PRODUCT_UPDATE_SUCCESS} from '../reducers/Product/ProductUpdateSlice'
 import { PRODUCT_CREATE_REVIEW_FAIL, PRODUCT_CREATE_REVIEW_REQUEST, PRODUCT_CREATE_REVIEW_SUCCESS } from '../reducers/Product/ProductReviewCreateReducer'
 import { PRODUCT_CREATE_FAIL, PRODUCT_CREATE_REQUEST, PRODUCT_CREATE_SUCCESS } from '../reducers/Product/ProductCreateSlice'
 
-export const listProducts = () => async (dispatch) =>{
+export const listProducts = (keyword='') => async (dispatch) =>{
     try{
         //first dispatch product_list_request action
         dispatch(PRODUCT_LIST_REQUEST())
-
-        const {data} = await axios.get('/api/products')
-        console.log('axios data:', data)
-        dispatch(
-            PRODUCT_LIST_SUCCESS(data)
-        )
+        if(keyword){
+            const { data } = await axios.get(`/api/products/${keyword}`)
+            console.log('axios data:', data)
+            dispatch(PRODUCT_LIST_SUCCESS(data))
+        }else{
+            const { data } = await axios.get(`/api/products/`)
+            console.log('axios data:', data)
+            dispatch(PRODUCT_LIST_SUCCESS(data))
+        }
 
     }catch(error){
         console.log('error')
