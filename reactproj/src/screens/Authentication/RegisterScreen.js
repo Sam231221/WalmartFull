@@ -23,11 +23,11 @@ function RegisterScreen({ location, history }) {
     const userRegister = useSelector(state => state.userRegister)
     const { error, loading, userInfo } = userRegister
 
-    // useEffect(() => {
-    //     if (userInfo) {
-    //         redirect('/login')
-    //     }
-    // }, [userInfo])
+    useEffect(() => {
+        if (userInfo) {
+            redirect('/login')
+        }
+    }, [userInfo])
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -37,19 +37,17 @@ function RegisterScreen({ location, history }) {
         } else {
             dispatch(register(name, email, password))
         }
-        console.log('redirexting')
-        redirect('/login')
     }
 
     return (
         <FormContainer>
-            <h1>Sign In</h1>
+            <h3 className='mb-2'>Sign In</h3>
             {message && <Message variant='danger'>{message}</Message>}
             {error && <Message variant='danger'>{error}</Message>}
             {loading && <Loader />}
             <Form onSubmit={submitHandler}>
 
-                <Form.Group controlId='name'>
+                <Form.Group className='mb-3' controlId='name'>
                     <Form.Label>Name</Form.Label>
                     <Form.Control
                         required
@@ -61,7 +59,7 @@ function RegisterScreen({ location, history }) {
                     </Form.Control>
                 </Form.Group>
 
-                <Form.Group controlId='email'>
+                <Form.Group className='mb-3' controlId='email'>
                     <Form.Label>Email Address</Form.Label>
                     <Form.Control
                         required
@@ -73,7 +71,7 @@ function RegisterScreen({ location, history }) {
                     </Form.Control>
                 </Form.Group>
 
-                <Form.Group controlId='password'>
+                <Form.Group className='mb-3' controlId='password'>
                     <Form.Label>Password</Form.Label>
                     <Form.Control
                         required
@@ -85,7 +83,7 @@ function RegisterScreen({ location, history }) {
                     </Form.Control>
                 </Form.Group>
 
-                <Form.Group controlId='passwordConfirm'>
+                <Form.Group className='mb-3' controlId='passwordConfirm'>
                     <Form.Label>Confirm Password</Form.Label>
                     <Form.Control
                         required

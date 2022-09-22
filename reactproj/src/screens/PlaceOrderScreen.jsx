@@ -3,6 +3,7 @@ import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {Message} from '../components/Message'
+import PageContainer from '../components/PageContainer'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { createOrder } from '../actions/orderActions'
 import { ORDER_CREATE_RESET } from '../reducers/Order/OrderCreateSlice'
@@ -57,16 +58,16 @@ function PlaceOrderScreen() {
     }
 
     return (
-        <div>
+        <PageContainer>
             <CheckoutSteps step1 step2 step3 step4 />
             <Row>
                 <Col md={8}>
-                    <ListGroup variant='flush'>
+                    <ListGroup  className='m-3 p-3 shadow' variant='flush'>
                         <ListGroup.Item>
-                            <h2>Shipping</h2>
+                            <h4>Shipping</h4>
 
                             <p>
-                                <strong>Shipping: </strong>
+                                <strong>Address: </strong>
                                 {cart.shippingAddress.address},  {cart.shippingAddress.city}
                                 {'  '}
                                 {cart.shippingAddress.postalCode},
@@ -76,7 +77,7 @@ function PlaceOrderScreen() {
                         </ListGroup.Item>
 
                         <ListGroup.Item>
-                            <h2>Payment Method</h2>
+                            <h4>Payment Method</h4>
                             <p>
                                 <strong>Method: </strong>
                                 {cart.paymentMethod}
@@ -84,7 +85,7 @@ function PlaceOrderScreen() {
                         </ListGroup.Item>
 
                         <ListGroup.Item>
-                            <h2>Order Items</h2>
+                            <h4>Order Items</h4>
                             <hr />
                             {cart.cartItems.length === 0 ? <Message variant='info'>
                                 Your cart is empty
@@ -94,11 +95,11 @@ function PlaceOrderScreen() {
                                             <ListGroup.Item key={index}>
                                                 <Row>
                                                     <Col md={1}>
-                                                        <Image src={item.image} alt={item.name} fluid rounded />
+                                                        <Image src={item.thumbnail} alt={item.name} fluid rounded />
                                                     </Col>
 
                                                     <Col>
-                                                        <Link to={`/product/${item.product}`}>{item.name}</Link>
+                                                        <Link className='nav-links link-dark' to={`/product/${item.product}`}>{item.name}</Link>
                                                     </Col>
 
                                                     <Col md={4}>
@@ -116,8 +117,8 @@ function PlaceOrderScreen() {
                 </Col>
 
                 <Col md={4}>
-                    <Card>
-                        <ListGroup variant='flush'>
+
+                        <ListGroup  className='m-3 p-3 shadow' variant='flush'>
                             <ListGroup.Item>
                                 <h2>Order Summary</h2>
                             </ListGroup.Item>
@@ -167,10 +168,10 @@ function PlaceOrderScreen() {
                             </ListGroup.Item>
 
                         </ListGroup>
-                    </Card>
+            
                 </Col>
             </Row>
-        </div>
+        </PageContainer>
     )
 }
 

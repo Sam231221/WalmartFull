@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Rating({color, value, text}) {
   return (
-    <div className='rating'>
+    <span className='rating'>
         <span>
            <i style={{color}} className={
             value >=1? 'fas fa-star'
@@ -43,6 +43,6 @@ export default function Rating({color, value, text}) {
             :'far fa-star'  
         }></i>
         </span>
-    </div>
+    </span>
   )
 }

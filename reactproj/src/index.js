@@ -5,8 +5,9 @@ import {Provider} from 'react-redux'
 import store from './store'
 
 import './index.css';
-//https://bootswatch.com/lux/
-import './bootstrap.min.css'
+// https://bootswatch.com/lux/
+// import './bootstrap.min.css'
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 
 
 import App from './App';

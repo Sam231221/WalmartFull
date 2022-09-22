@@ -9,7 +9,7 @@ from Mbase.serializers import ProductSerializer, OrderSerializer
 
 from rest_framework import status
 from datetime import datetime
-
+from django.utils import timezone
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -54,7 +54,7 @@ def addOrderItems(request):
                 name=product.name,
                 qty=int(i['quantity']),
                 price=i['price'],
-                image=product.image.url,
+                thumbnail=product.thumbnail.url,
             )
 
             # (4) Update stock
@@ -107,7 +107,7 @@ def updateOrderToPaid(request, pk):
 
     #this is updated with new datetime.
     order.isPaid = True
-    order.paidAt = datetime.now()
+    order.paidAt = timezone.now()
     order.save()
 
     return Response(f'Order was paid at {order.paidAt}')

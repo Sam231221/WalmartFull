@@ -4,8 +4,8 @@ export default function Loader() {
   return (
     <Spinner animation="border" role="status"
     style={{
-        height:'100px',
-        width:'100px',
+        height:'40px',
+        width:'40px',
         margin:'auto',
         display:'block'
     }}>

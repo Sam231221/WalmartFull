@@ -6,6 +6,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import { Message } from '../components/Message'
 import { getUserDetails, updateUserProfile } from '../actions/userActions'
+import PageContainer from '../components/PageContainer'
+
+
 
 function ProfileScreen({ history }) {
 
@@ -61,6 +64,7 @@ function ProfileScreen({ history }) {
 
     }
     return (
+        <PageContainer>
         <Row>
             <Col md={3}>
                 <h2>User Profile</h2>
@@ -126,6 +130,7 @@ function ProfileScreen({ history }) {
             </Col>
 
         </Row>
+         </PageContainer>
     )
 }
 

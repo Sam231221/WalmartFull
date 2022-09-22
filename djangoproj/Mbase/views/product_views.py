@@ -1,3 +1,4 @@
+from unicodedata import category
 from django.shortcuts import render
 
 from rest_framework.decorators import api_view, permission_classes
@@ -9,6 +10,11 @@ from Mbase.models import Product, Review
 from Mbase.serializers import ProductSerializer
 
 from rest_framework import status
+
+from Mbase.models import Category,  ImageAlbum
+from Mbase.serializers import CategorySerializer,ImageAlbumSerializer
+
+
 
 '''
 Generating API from python file.
@@ -39,6 +45,18 @@ def getProduct(request, pk):
 
 
 @api_view(['GET'])
+def getCategories(request):
+    categories_obj = Category.objects.all()
+    categories = CategorySerializer(categories_obj, many=True).data
+    print(categories)
+    for category in categories:
+        category_obj = Category.objects.filter(id=category['id']).first()
+        category['genres'] = list(category_obj.genre_set.values())
+
+    return Response(categories)
+
+
+@api_view(['GET'])
 def getProducts(request):
     query = request.query_params.get('keyword')
     if query == None:
@@ -62,17 +80,58 @@ def getProducts(request):
 
     page = int(page)
     print('Page:', page)
-    serializer = ProductSerializer(products, many=True)
-    print(serializer.data)
-    return Response({'products': serializer.data, 'page': page, 'pages': paginator.num_pages})
+    serialized_products = ProductSerializer(products, many=True).data
+    for product in serialized_products:
+       product_obj = Product.objects.filter(_id=product['_id']).first()
+       product['images'] = list(product_obj.imagealbum_set.values())
+
+    return Response({'products': serialized_products, 'page': page, 'pages': paginator.num_pages})
 
 
 @api_view(['GET'])
 def getTopProducts(request):
     products = Product.objects.filter(rating__gte=4).order_by('-rating')[0:5]
-    serializer = ProductSerializer(products, many=True)
-    return Response(serializer.data)
+    serialized_products = ProductSerializer(products, many=True).data
+    for product in serialized_products:
+       product_obj = Product.objects.filter(_id=product['_id']).first()
+       product['images'] = list(product_obj.imagealbum_set.values())
+    return Response(serialized_products)
 
+@api_view(['GET'])
+def getDealProducts(request):
+    category_obj =Category.objects.filter(name__icontains="deals").first()
+    products = Product.objects.filter(category=category_obj)[0:6]
+    serialized_products = ProductSerializer(products, many=True).data
+    for product in serialized_products:
+       product_obj = Product.objects.filter(_id=product['_id']).first()
+       imagealbum_objs= ImageAlbum.objects.filter(product=product_obj) 
+       product['images'] = ImageAlbumSerializer(imagealbum_objs, many=True).data
+
+    return Response(serialized_products)
+
+
+@api_view(['GET'])
+def getRecentProducts(request):
+    category_obj = Category.objects.filter(name__icontains="deals").first()
+    products = Product.objects.order_by('-createdAt').exclude(category=category_obj)[0:8]
+    serialized_products = ProductSerializer(products, many=True).data
+    for product in serialized_products:
+       product_obj = Product.objects.filter(_id=product['_id']).first()
+       imagealbum_objs= ImageAlbum.objects.filter(product=product_obj) 
+       product['images'] = ImageAlbumSerializer(imagealbum_objs, many=True).data
+
+    return Response(serialized_products)
+
+
+@api_view(['GET'])
+def getFeaturedProducts(request):
+    products = Product.objects.filter(is_featured=True)[0:8]
+    serialized_products = ProductSerializer(products, many=True).data
+    for product in serialized_products:
+       product_obj = Product.objects.filter(_id=product['_id']).first()
+       product['images'] = list(product_obj.imagealbum_set.values())
+
+    return Response(serialized_products)
 
 @api_view(['GET'])
 def getProduct(request, pk):

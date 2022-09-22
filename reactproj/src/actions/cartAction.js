@@ -11,10 +11,10 @@ export const addToCart = (id, quantity) => async (dispatch, getState) =>{
             CART_ADD_ITEM({
                 product:data._id, 
                 name:data.name, 
-                image:data.image,
+                thumbnail:data.thumbnail,
                 price:data.price,
                 countInStock:data.countInStock,
-                quantity
+                quantity:Number(quantity),
             })
         )
         console.log('getState():', getState().cart)

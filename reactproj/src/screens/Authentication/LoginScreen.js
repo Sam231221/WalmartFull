@@ -46,7 +46,7 @@ function LoginScreen() {
 
     return (
         <FormContainer>
-            <h1>Sign In</h1>
+            <h3 className='mb-2'>Walmart Sign In</h3>
             {error && <Message variant='danger'>{error}</Message>}
             {loading && <Loader />}
             <Form onSubmit={submitHandler}>
