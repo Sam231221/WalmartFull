@@ -5,6 +5,8 @@ urlpatterns = [
     path('categories/', views.getCategories, name="categories"),
 
     path('', views.getProducts, name="products"),
+    
+    path('all/', views.getAllProducts , name="all-products"),
 
     #Filters
     path('top/', views.getTopProducts, name='top-products'),

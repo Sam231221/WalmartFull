@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import SearchBox from '../SearchBox'
 import { logout } from '../../actions/userActions'
@@ -11,7 +11,7 @@ import womenbanner from '../../assets/images/womens-banner.jpg'
 import electronicsbanner2 from '../../assets/images/electronics-banner-2.jpg'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
-
+import Loader from '../Loader'
 
 
 function Header() {
@@ -20,18 +20,53 @@ function Header() {
 
     const cart = useSelector(state => state.cart)
     const { cartItems } = cart
-        
+
+    const [products, setProducts] = useState([]);
+    const [isSLoading, setSLoading] = useState(true)
+
+    const [filteredData, setfilterdata] = useState([]);
+    const [isFLoading, setFLoading] = useState(true)
+    const [word, setWordData] = useState("");
+
+    const loadAllProducts = async () => {
+        const { data } = await axios.get(`/api/products/all/`)
+        setProducts(data)
+        setSLoading(false)
+    }
+
+
+    const handleOnChange = (e) => {
+        const enteredWord = e.target.value;
+        console.log(enteredWord)
+        setWordData(enteredWord);
+
+        const filterItems = products.filter((item) => {
+            return item.name.toLowerCase().includes(enteredWord.toLowerCase());
+        });
+        console.log(filterItems)
+        if (enteredWord === "") {
+            setfilterdata([]);
+        } else {
+            setfilterdata(filterItems);
+            console.log('ff:', typeof (filteredData.length))
+            setFLoading(false)
+        }
+
+    };
+
     const dispatch = useDispatch()
 
     const [categories, setCategories] = useState([])
 
-    const loadCategories = async ()=>{
-        const {data} = await axios.get('/api/products/categories/')
+    const loadCategories = async () => {
+        const { data } = await axios.get('/api/products/categories/')
         console.log(data)
         setCategories(data)
     }
-    useEffect(()=>{
+    useEffect(() => {
+        loadAllProducts()
         loadCategories()
+
     }, [])
 
     const logoutHandler = () => {
@@ -82,7 +117,7 @@ function Header() {
 
                     <div className="header-top-actions">
 
-                    {userInfo && <p className='header-alert-news'>Welcome {userInfo.name} </p>}
+                        {userInfo && <p className='header-alert-news'>Welcome {userInfo.name} </p>}
                     </div>
 
                 </div>
@@ -97,13 +132,43 @@ function Header() {
                         <img src={logo} alt="Anon's logo" width="120" height="36" />
                     </Link>
 
-                    <div className="header-search-container">
+                    <div className="header-search-container search-engine">
 
-                        <input type="search" name="search" className="search-field" placeholder="Enter your product name..." />
+                        <input
+                            type="search"
+                            onChange={handleOnChange}
+                            name="search" value={word}
+                            className="search-field"
+                            placeholder="Enter your product name..." />
 
-                            <button className="search-btn">
-                                <ion-icon name="search-outline"></ion-icon>
-                            </button>
+                        <button className="search-btn">
+                            <ion-icon name="search-outline"></ion-icon>
+                        </button>
+
+
+                        {filteredData.length != 0 && word != '' &&
+                            <div className="search-results">
+                                {isFLoading ? <Loader />
+                                    :
+                                    <>
+                                        {filteredData.map((product, key) => {
+                                            return (
+                                                <Link className="p-1 dataItem nav-links link-dark" to={`/product/${product._id}`}>
+                                                    <div className='d-flex'>
+                                                        <img width="30" height="30" src={product.thumbnail} alt={product.name} />
+                                                        <p>{product.name} </p>
+                                                    </div>
+                                                </Link>
+                                            );
+                                        })}
+                                    </>
+                                }
+                            </div>
+                        }
+                        {filteredData.length == 0 && word != '' &&
+                            <div className="search-results p-4">No Products found.</div>
+                        }
+
 
                     </div>
 
@@ -150,12 +215,12 @@ function Header() {
                                         <li className="menu-title">
                                             <Link to={`/products/?category=${category.slug}/`}>{category.name}</Link>
                                         </li>
-                                     
-                                       {category.genres.map((genre, i)=>(
-                                        <li className="panel-list-item">
-                                            <Link to={`/products/?category=${category.slug}&genre=${genre.slug}/`}>{genre.name}</Link>
-                                        </li>
-                                       ))}
+
+                                        {category.genres.map((genre, i) => (
+                                            <li className="panel-list-item">
+                                                <Link to={`/products/?category=${category.slug}&genre=${genre.slug}/`}>{genre.name}</Link>
+                                            </li>
+                                        ))}
 
 
                                     </ul>

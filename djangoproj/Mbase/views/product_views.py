@@ -57,6 +57,13 @@ def getCategories(request):
 
 
 @api_view(['GET'])
+def getAllProducts(request):
+    products = Product.objects.all()
+    serialized_data = ProductSerializer(products, many=True).data
+    return Response(serialized_data)
+
+
+@api_view(['GET'])
 def getProducts(request):
     query = request.query_params.get('keyword')
     if query == None:
@@ -64,7 +71,7 @@ def getProducts(request):
 
     products = Product.objects.filter(
         name__icontains=query).order_by('-createdAt')
-
+    print('p:', products)
     page = request.query_params.get('page')
     paginator = Paginator(products, 4)
 
