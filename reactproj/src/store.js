@@ -25,6 +25,7 @@ import OrderCreateReducer from './reducers/Order/OrderCreateSlice';
 import OrderDeliveryReducer from './reducers/Order/OrderDeliverySlice'
 import OrderListsReducer from './reducers/Order/OrderListsSlice';
 import OrderPayReducer from './reducers/Order/OrderPaySlice';
+import UserLikeReducer from './reducers/User/UserLikeSlice';
 
 
 //Admin
@@ -48,6 +49,7 @@ const store = configureStore({
         userList: UserListReducer,
         userDetails: UserDetailReducer,
         userUpdate: UserUpdateReducer,
+        userLikes: UserLikeReducer,
 
         orderCreate: OrderCreateReducer,
         orderDetails: OrderDetailsReducer,

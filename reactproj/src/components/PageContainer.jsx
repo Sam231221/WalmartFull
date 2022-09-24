@@ -5,7 +5,7 @@ function PageContainer({ children }) {
     return (
         <>
         <Header/>
-        {children}
+          {children}
         <Footer/>
         </>
 

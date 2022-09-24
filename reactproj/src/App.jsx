@@ -1,11 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
-import Header from "./components/Header/Header";
-import Footer from "./components/Footer/Footer";
 import ProductScreen from './screens/ProductScreen';
 import { HomeScreen } from './screens/HomeScreen';
-import { HomeScreenDummy } from './screens/HomeScreenDummy';
-
 import CartScreen from './screens/CartScreen';
 import LoginScreen from './screens/Authentication/LoginScreen';
 import RegisterScreen from './screens/Authentication/RegisterScreen'

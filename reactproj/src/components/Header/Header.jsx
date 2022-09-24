@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Button } from 'react-bootstrap'
+
 import SearchBox from '../SearchBox'
 import { logout } from '../../actions/userActions'
-import { HeaderSection } from './Header.element'
 
-import logo from '../../assets/images/logo/logo.svg'
-import electronicsbanner from '../../assets/images/electronics-banner-1.jpg'
-import menbanner from '../../assets/images/mens-banner.jpg'
-import womenbanner from '../../assets/images/womens-banner.jpg'
-import electronicsbanner2 from '../../assets/images/electronics-banner-2.jpg'
+import logo from '../../assets/images/logo/logo.png'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import Loader from '../Loader'
@@ -33,7 +30,6 @@ function Header() {
         setProducts(data)
         setSLoading(false)
     }
-
 
     const handleOnChange = (e) => {
         const enteredWord = e.target.value;
@@ -80,7 +76,7 @@ function Header() {
 
                 <div className="container">
 
-                    <ul className="header-social-container">
+                    <ul className="header-social-container mb-0">
 
                         <li>
                             <a href="#" className="social-link">
@@ -109,14 +105,13 @@ function Header() {
                     </ul>
 
                     <div className="header-alert-news">
-                        <p>
+                        <p className='mb-0'>
                             <b>Free Shipping</b>
                             This Week Order Over - $55
                         </p>
                     </div>
 
-                    <div className="header-top-actions">
-
+                    <div className="header-top-actions mb-0">
                         {userInfo && <p className='header-alert-news'>Welcome {userInfo.name} </p>}
                     </div>
 
@@ -129,7 +124,7 @@ function Header() {
                 <div className="container">
 
                     <Link to="/" className="header-logo">
-                        <img src={logo} alt="Anon's logo" width="120" height="36" />
+                        <img src={logo} alt="Anon's logo" width="170" />
                     </Link>
 
                     <div className="header-search-container search-engine">
@@ -174,19 +169,42 @@ function Header() {
 
                     <div className="header-user-actions">
 
-                        <Link to='/' className="action-btn">
-                            <ion-icon name="person-outline"></ion-icon>
-                        </Link>
-
-                        <Link to='/likes' className="action-btn">
+                        {/* <Link to='/likes' className="action-btn">
                             <ion-icon name="heart-outline"></ion-icon>
                             <span className="count">0</span>
-                        </Link>
+                        </Link> */}
 
                         <Link to='/cart' className="action-btn">
                             <ion-icon name="bag-handle-outline"></ion-icon>
                             <span className="count"> {cartItems.reduce((acc, item) => (acc + item.quantity), 0)}</span>
                         </Link>
+
+                        {!userInfo && (
+                            <Link to='/login' className="action-btn">
+                               <ion-icon name="log-in-outline"></ion-icon>
+                               
+                            </Link>
+                        )}
+
+
+                        {userInfo && userInfo.isAdmin && (
+                            <div class="dropdown mt-4 text-end">
+                                <button class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle" />
+                                </button>
+                                <ul class="dropdown-menu text-small">
+                                    <li><Link to='/admin/userlist' class="dropdown-item" href="#">Users</Link></li>
+                                    <li><Link to="/admin/productlist" class="dropdown-item" href="#">Products</Link></li>
+                                    <li><Link to='/admin/orderlist' class="dropdown-item" href="#">Orders</Link></li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li className='ms-3'>
+                                        <ion-icon onClick={logoutHandler}  name="log-out-outline" style={{"fontSize": 30}}></ion-icon>
+                                      </li>
+                                </ul>
+                            </div>
+                        )}
+
+
 
                     </div>
 
@@ -515,19 +533,4 @@ function Header() {
 export default Header;
 
 
-{/* {userInfo && userInfo.isAdmin && (
-                                <NavDropdown title='Admin' id='adminmenue'>
-                                    <LinkContainer to='/admin/userlist'>
-                                        <NavDropdown.Item>Users</NavDropdown.Item>
-                                    </LinkContainer>
 
-                                    <LinkContainer to='/admin/productlist'>
-                                        <NavDropdown.Item>Products</NavDropdown.Item>
-                                    </LinkContainer>
-
-                                    <LinkContainer to='/admin/orderlist'>
-                                        <NavDropdown.Item>Orders</NavDropdown.Item>
-                                    </LinkContainer>
-
-                                </NavDropdown>
-                            )} */}

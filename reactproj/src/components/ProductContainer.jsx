@@ -2,9 +2,11 @@ import React from 'react'
 import { useEffect } from 'react'
 import axios from 'axios'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Loader from './Loader'
 import ctabanner from '../assets/images/cta-banner.jpg'
+import { useDispatch } from 'react-redux'
+import { addUserlike } from '../actions/userActions'
 
 
 export default function ProductContainer() {
@@ -19,6 +21,9 @@ export default function ProductContainer() {
 
   const [dealProducts, SetDealProducts] = useState([])
   const [isDpLoading, SetDpLoading] = useState(true)
+
+  const dispatch =  useDispatch()
+  const navigate = useNavigate()
 
   const loadTopRatedProducts = async () => {
     const { data } = await axios.get('api/products/top/')
@@ -44,6 +49,9 @@ export default function ProductContainer() {
     SetDealProducts(data)
     SetDpLoading(false)
   }
+  const addToCartHandler = (id, quantity=1) => {
+    navigate(`/cart/?code=${id}&qty=${quantity}`)
+}
 
   useEffect(() => {
     loadTopRatedProducts()
@@ -76,19 +84,15 @@ export default function ProductContainer() {
                     <img src={product.thumbnail} alt={product.name} class="product-img hover" width="300" />
 
                     <div class="showcase-actions">
-                      <button class="btn-action">
-                        <ion-icon name="heart-outline" role="img" class="md hydrated" aria-label="heart outline"></ion-icon>
-                      </button>
+                      {/* <button class="btn-action">
+                        <ion-icon  name="heart-outline" role="img" class="md hydrated" aria-label="heart outline"></ion-icon>
+                      </button> */}
 
                       <Link to={`/product/${product._id}`} class="btn-action">
                         <ion-icon name="eye-outline" role="img" class="md hydrated" aria-label="eye outline"></ion-icon>
                       </Link>
 
-                      <button class="btn-action">
-                        <ion-icon name="repeat-outline" role="img" class="md hydrated" aria-label="repeat outline"></ion-icon>
-                      </button>
-
-                      <button class="btn-action">
+                      <button onClick={()=>addToCartHandler(product._id)} class="btn-action">
                         <ion-icon name="bag-add-outline" role="img" class="md hydrated" aria-label="bag add outline"></ion-icon>
                       </button>
                     </div>
@@ -135,7 +139,7 @@ export default function ProductContainer() {
                 <div class="showcase-container">
                   {isRpLoading ? <Loader /> :
                     <>
-                      {recentProducts.map((product, i) => (
+                      {recentProducts.slice(0, 4).map((product, i) => (
                         <div key={product.id} class="showcase">
 
                           <Link to="/" class="showcase-img-box">
@@ -176,7 +180,7 @@ export default function ProductContainer() {
                 <div class="showcase-container">
                   {isFpLoading ? <Loader /> :
                     <>
-                      {featuredProducts.map((product, i) => (
+                      {featuredProducts.slice(0, 4).map((product, i) => (
                         <div key={product.id} class="showcase">
 
                           <Link to="#" class="showcase-img-box">
@@ -220,7 +224,7 @@ export default function ProductContainer() {
 
                   {isTrpLoading ? <Loader /> :
                     <>
-                      {topRatedProducts.map((product, i) => (
+                      {topRatedProducts.slice(0, 4).map((product, i) => (
                         <div key={product.id} class="showcase">
 
                           <Link to="#" class="showcase-img-box">

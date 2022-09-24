@@ -29,32 +29,35 @@ function PaymentScreen({ history }) {
 
     return (
         <PageContainer>
-            <FormContainer>
-                <CheckoutSteps step1 step2 step3 />
+            <div className="container">
+   
+                    <div className='form-signin mb-4 shadow m-4 w-100 m-auto'>
+                        <CheckoutSteps step1 step2 step3 />
 
-                <Form onSubmit={submitHandler}>
-                    <Form.Group>
-                        <Form.Label as='legend'>Select Method</Form.Label>
-                        <Col>
-                            <Form.Check
-                                type='radio'
-                                label='PayPal or Credit Card'
-                                id='paypal'
-                                name='paymentMethod'
-                                checked
-                                onChange={(e) => setPaymentMethod(e.target.value)}
-                            >
+                        <Form onSubmit={submitHandler}>
+                            <Form.Group>
+                                <Form.Label as='legend'>Select Method</Form.Label>
+                                <Col>
+                                    <Form.Check
+                                        type='radio'
+                                        label='PayPal or Credit Card'
+                                        id='paypal'
+                                        name='paymentMethod'
+                                        checked
+                                        onChange={(e) => setPaymentMethod(e.target.value)}
+                                    >
 
-                            </Form.Check>
-                        </Col>
-                    </Form.Group>
+                                    </Form.Check>
+                                </Col>
+                            </Form.Group>
 
-                    <Button type='submit' className="mt-4" variant='primary'>
-                        Continue
-                    </Button>
-                </Form>
-            </FormContainer>
-        </PageContainer>
+                            <Button type='submit' className="mt-4" variant='primary'>
+                                Continue
+                            </Button>
+                        </Form>
+                    </div>
+            </div>
+        </PageContainer >
 
     )
 }

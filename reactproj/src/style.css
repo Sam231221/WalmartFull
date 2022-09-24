@@ -141,6 +141,11 @@ i {
 
 .container { padding: 0 15px; }
 
+.form-signin {
+  max-width: 530px;
+  padding: 20px;
+}
+
 .form-control{
   display: block;
   width: 100%;
@@ -157,13 +162,18 @@ i {
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
+.btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active {
+  color: white;
+  background-color: black;
+  border-color: black;
+}
 .btn-primary{
   background-color:rgb(17, 17, 17);
   border: none;
   border-radius: 0%;
 }
 .btn-primary:hover{
-  background-color: black;
+  background-color: black!important;
 }
 
 .has-scrollbar { padding-bottom: 5px; }
@@ -1742,7 +1752,7 @@ footer {
 
   .header-alert-news b { font-weight: var(--weight-500); }
 
-  .header-main { padding: 25px 0; }
+  .header-main { padding: 5px 0; }
 
   .mobile-bottom-navigation {
     border-top-left-radius: var(--border-radius-md);
@@ -2308,7 +2318,7 @@ footer {
 
   .banner { margin-top: 0; }
 
-  .slider-item { height: 380px; }
+  .slider-item { height: 600px; }
 
   .banner-content {
     left: 75px;

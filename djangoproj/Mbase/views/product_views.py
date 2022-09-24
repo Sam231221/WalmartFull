@@ -46,7 +46,7 @@ def getProduct(request, pk):
 
 @api_view(['GET'])
 def getCategories(request):
-    categories_obj = Category.objects.all()
+    categories_obj = Category.objects.all().exclude(name__icontains='deals')
     categories = CategorySerializer(categories_obj, many=True).data
     print(categories)
     for category in categories:
@@ -151,14 +151,12 @@ def getProduct(request, pk):
 @permission_classes([IsAdminUser])
 def createProduct(request):
     user = request.user
-
     product = Product.objects.create(
         user=user,
         name='Sample Name',
         price=0,
         brand='Sample Brand',
         countInStock=0,
-        category='Sample Category',
         description=''
     )
 
@@ -171,12 +169,12 @@ def createProduct(request):
 def updateProduct(request, pk):
     data = request.data
     product = Product.objects.get(_id=pk)
-
+    print(data['category'])
     product.name = data['name']
     product.price = data['price']
     product.brand = data['brand']
     product.countInStock = data['countInStock']
-    product.category = data['category']
+    product.category = Category.objects.filter(name=data['category']).first()
     product.description = data['description']
 
     product.save()

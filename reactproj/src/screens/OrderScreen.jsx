@@ -76,12 +76,15 @@ export default function OrderScreen() {
 
     const successPaymentHandler = (paymentResult) => {
         console.log(paymentResult)
-
         dispatch(payOrder(id, paymentResult))
+        alert('Payment Completed!')
+        window.location.reload()
     }
 
     const deliverHandler = () => {
         dispatch(deliverOrder(order))
+        alert('Order Delivery Completed!')
+        window.location.reload()
     }
 
     return loading ? (
@@ -92,14 +95,14 @@ export default function OrderScreen() {
     ) : (
         <PageContainer>
             <Container>
-            <h1>Order No: {order._id}</h1>
+            <h3>Order No: {order._id}</h3>
             <Row>
                 <Col md={8}>
                     <ListGroup className='shadow p-2 m-2' variant='flush'>
                         <ListGroup.Item>
                             <h4>Shipping</h4>
                             <p><strong>Name: </strong> {order.user.name}</p>
-                            <p><strong>Email: </strong><a href={`mailto:${order.user.email}`}>{order.user.email}</a></p>
+                            <p><strong>Email: </strong>{order.user.email}</p>
                             <p>
                                 <strong>Shipping: </strong>
                                 {order.shippingAddress.address},  {order.shippingAddress.city}
@@ -207,7 +210,7 @@ export default function OrderScreen() {
                         </ListGroup>
                         {loadingDeliver && <Loader />}
                         {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
-                            <ListGroup.Item>
+                            <ListGroup.Item className="mb-3 ms-2">
                                 <Button
                                     type='button'
                                     className='btn btn-block'

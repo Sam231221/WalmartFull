@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useNavigate,  useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Form, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../../components/Loader'
@@ -7,18 +7,19 @@ import { Message } from '../../components/Message'
 import FormContainer from '../../components/FormContainer'
 import { getUserDetails, updateUser } from '../../actions/userActions'
 import { USER_UPDATE_RESET } from '../../reducers/User/UserUpdateSlice'
+import PageContainer from '../../components/PageContainer'
 
 
 
 function UserEditScreen() {
-    const {id}  = useParams()
+    const { id } = useParams()
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [isAdmin, setIsAdmin] = useState(false)
 
     const dispatch = useDispatch()
-    const redirect =useNavigate()
+    const redirect = useNavigate()
 
     const userDetails = useSelector(state => state.userDetails)
     const { error, loading, user } = userDetails
@@ -42,72 +43,79 @@ function UserEditScreen() {
                 setIsAdmin(user.isAdmin)
             }
         }
-  
 
-    }, [user, dispatch, id,redirect, successUpdate])
+
+    }, [user, dispatch, id, redirect, successUpdate])
 
     const submitHandler = (e) => {
         e.preventDefault()
         dispatch(updateUser({ _id: user._id, name, email, isAdmin }))
+        alert('User Sucessfully updated!')
+        redirect(-1)
     }
 
     return (
-        <div>
-            <Link to='/admin/userlist'>
-                Go Back
-            </Link>
+        <PageContainer>
+            <div className="container">
+                <Link className='btn btn-sm btn-primary' to='/admin/userlist'>
+                    Go Back
+                </Link>
 
-            <FormContainer>
-                <h1>Edit User</h1>
-                {/* {loadingUpdate && <Loader />}
+                <FormContainer>
+                    <div className="form-signin shadow w-100 m-auto">
+                        <h1>Edit User</h1>
+                        {/* {loadingUpdate && <Loader />}
                 {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>} */}
 
-                {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message>
-                    : (
-                        <Form onSubmit={submitHandler}>
+                        {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message>
+                            : (
+                                <Form onSubmit={submitHandler}>
 
-                            <Form.Group controlId='name'>
-                                <Form.Label>Name</Form.Label>
-                                <Form.Control
+                                    <Form.Group className='mb-2' controlId='name'>
+                                        <Form.Label>Name</Form.Label>
+                                        <Form.Control
 
-                                    type='name'
-                                    placeholder='Enter name'
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                >
-                                </Form.Control>
-                            </Form.Group>
+                                            type='name'
+                                            placeholder='Enter name'
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                        >
+                                        </Form.Control>
+                                    </Form.Group>
 
-                            <Form.Group controlId='email'>
-                                <Form.Label>Email Address</Form.Label>
-                                <Form.Control
-                                    type='email'
-                                    placeholder='Enter Email'
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                >
-                                </Form.Control>
-                            </Form.Group>
+                                    <Form.Group className='mb-2' controlId='email'>
+                                        <Form.Label>Email Address</Form.Label>
+                                        <Form.Control
+                                            type='email'
+                                            placeholder='Enter Email'
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                        >
+                                        </Form.Control>
+                                    </Form.Group>
 
-                            <Form.Group controlId='isadmin'>
-                                <Form.Check
-                                    type='checkbox'
-                                    label='Is Admin'
-                                    checked={isAdmin}
-                                    onChange={(e) => setIsAdmin(e.target.checked)}
-                                >
-                                </Form.Check>
-                            </Form.Group>
+                                    <Form.Group className='mb-3' controlId='isadmin'>
+                                        <Form.Check
+                                            type='checkbox'
+                                            label='Is Admin'
+                                            checked={isAdmin}
+                                            onChange={(e) => setIsAdmin(e.target.checked)}
+                                        >
+                                        </Form.Check>
+                                    </Form.Group>
 
-                            <Button type='submit' variant='primary'>
-                                Update
-                        </Button>
+                                    <Button type='submit' variant='primary'>
+                                        Update
+                                    </Button>
 
-                        </Form>
-                    )}
+                                </Form>
+                            )}
+                    </div>
 
-            </FormContainer >
-        </div>
+
+                </FormContainer >
+            </div>
+        </PageContainer>
 
     )
 }

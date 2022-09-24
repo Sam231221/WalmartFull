@@ -6,6 +6,7 @@ import { USER_DETAIL_SUCCESS, USER_DETAIL_FAIL, USER_DETAIL_REQUEST, USER_DETAIL
 import { USER_DELETE_FAIL, USER_DELETE_REQUEST, USER_DELETE_SUCCESS } from "../reducers/User/UserDeleteSlice"
 import { USER_UPDATE_FAIL, USER_UPDATE_REQUEST, UPDATE_REQUEST_SUCCESS, USER_UPDATE_SUCCESS } from "../reducers/User/UserUpdateSlice"
 import { USER_LIST_FAIL, USER_LIST_REQUEST, USER_LIST_SUCCESS } from "../reducers/User/UserListSlice"
+import { USER_LIKE_ADD_REQUEST, USER_LIKE_ADD_SUCCESS } from "../reducers/User/UserLikeSlice"
 
 
 export const login =(email, password) => async(dispatch) =>{
@@ -200,6 +201,38 @@ export const deleteUser = (id) => async (dispatch, getState) => {
     }
 }
 
+
+
+export const addUserlike = (id) => async (dispatch, getState) => {
+    try {
+        dispatch(USER_LIKE_ADD_REQUEST())
+        //User must be logged in for likes.
+        const {
+            userLogin: { userInfo },
+        } = getState()
+        const config = {
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+        const { data } = await axios.delete(
+            `/api/users/likes/add/${id}/`,
+            config
+        )
+        console.log('likes:', data)
+
+        dispatch(USER_LIKE_ADD_SUCCESS(data))
+
+
+    } catch (error) {
+        dispatch(USER_LIST_FAIL(
+             error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
+        ))
+    }
+}
 
 export const updateUser = (user) => async (dispatch, getState) => {
     try {

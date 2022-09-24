@@ -27,12 +27,10 @@ export const HomeScreen = () => {
   console.log('p:', products)
 
   const keyword = window.location.search
-  //let keyword = history.location.search  <- Only this works,  needs to be done something.
 
-  console.log('kweyword:', keyword)
+
 
   useEffect(() => {
-    console.log('hello')
     dispatch(listProducts(keyword))
   }, [dispatch, keyword])
 

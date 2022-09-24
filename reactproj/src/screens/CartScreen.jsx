@@ -46,7 +46,7 @@ export default function CartScreen() {
         <PageContainer>
             <Container>
                 <Row>
-                    <h4>Shopping Cart</h4>
+                    <h4>Your Shopping Bag</h4>
                     <Col md={8}>
 
                         {cartItems.length === 0 ? (
@@ -77,13 +77,18 @@ export default function CartScreen() {
                                                     value={item.quantity}
                                                     onChange={(e) => dispatch(addToCart(item.product, Number(e.target.value)))}
                                                 >
-                                                    {
 
+                                                    {item.countInStock ===0 ? <option value="1">1</option>
+                                                    :<>
+                                                    {
                                                         [...Array(item.countInStock).keys()].map((x) => (
                                                             <option key={x + 1} value={x + 1}>
                                                                 {x + 1}
                                                             </option>
                                                         ))
+                                                    }
+                                                    </>
+
                                                     }
 
                                                 </Form.Control>
