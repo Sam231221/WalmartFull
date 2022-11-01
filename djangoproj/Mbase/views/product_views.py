@@ -1,5 +1,3 @@
-from unicodedata import category
-from django.shortcuts import render
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -103,6 +101,7 @@ def getTopProducts(request):
        product_obj = Product.objects.filter(_id=product['_id']).first()
        product['images'] = list(product_obj.imagealbum_set.values())
     return Response(serialized_products)
+
 
 @api_view(['GET'])
 def getDealProducts(request):
